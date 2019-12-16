@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.security.Principal;
+
 @RestController
 @CrossOrigin
 
@@ -14,6 +16,11 @@ import reactor.core.publisher.Mono;
 public class UsersRest {
     @Autowired
     UserRepository userRepository;
+
+    @GetMapping("/user")
+    public Mono<User> getUser(Principal principal) {
+        return userRepository.findByUsername(principal.getName());
+    }
 
     @GetMapping
     public Flux<User> findAllUsers() {

@@ -39,6 +39,13 @@ public class User implements UserDetails {
 	@Getter @Setter
 	private List<Role> roles = new ArrayList<>();
 
+	@Getter @Setter
+	private List<Message> message = new ArrayList<>();
+
+	public void addMessageToList(Message message) {
+		this.message.add(message);
+	}
+
 	public void addRoleToList(Role role) {
 		this.roles.add(role);
 	}

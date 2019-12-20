@@ -10,7 +10,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/message")
@@ -27,7 +26,8 @@ public class MessageREST {
     }
 
     @PostMapping
-    public Mono<Message> createMessage (@RequestBody Message message) {
+    public Mono<Message> createMessage (@RequestBody Message message, Principal principal) {
+        message.setAutor(principal.getName());
         return messageRepository.save(message);
     }
 

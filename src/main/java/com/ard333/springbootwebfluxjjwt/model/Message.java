@@ -1,11 +1,11 @@
 package com.ard333.springbootwebfluxjjwt.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,8 +16,14 @@ public class Message {
 	@Id
 	private String id;
 	private String content;
+	private String autor;
 
 	public Message(String content) {
 		this.content = content;
 	}
+
+
+	private List<Comment> comment = new ArrayList<>();
+
+	public void addCommentToList(Comment comment) { this.comment.add(comment); }
 }

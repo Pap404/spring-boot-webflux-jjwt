@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 
 @RequestMapping("/api/users")
 public class UsersRest {

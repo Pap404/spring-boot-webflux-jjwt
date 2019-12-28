@@ -13,8 +13,6 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/message")
-@CrossOrigin
-
 public class MessageREST {
     @Autowired
     UserRepository userRepository;

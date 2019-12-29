@@ -23,7 +23,8 @@ public class MessageREST {
     MessageRepository messageRepository;
 
     @GetMapping
-    public Flux<Message> getAllMessage (){
+    public Flux<Message> getAllMessage (Principal principal){
+        System.out.println(principal);
         return messageRepository.findAll();
     }
 

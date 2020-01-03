@@ -63,6 +63,7 @@ public class MessageREST {
     @PostMapping("/user")
     public Mono<Message> addMessageToUser (Principal principal, @RequestBody Message message) {
         Mono<User> userMono = userRepository.findByUsername(principal.getName());
+        message.setAutor(principal.getName());
         Mono<Message> messageMono = messageRepository.save(message);
          userMono.zipWith(messageMono)
                 .flatMap(t -> {

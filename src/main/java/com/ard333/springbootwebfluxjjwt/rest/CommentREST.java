@@ -62,7 +62,7 @@ public class CommentREST {
     }
 
     @PostMapping("/user/{messageId}")
-    public Mono<Message> addCommentToMessage (@PathVariable String messageId, @RequestBody Comment comment, Principal principal) {
+    public Mono<Comment> addCommentToMessage (@PathVariable String messageId, @RequestBody Comment comment, Principal principal) {
         Mono<Message> messageMono = messageRepository.findById(messageId);
         comment.setCommentator(principal.getName());
         Mono<Comment> commentMono = commentRepository.save(comment);
@@ -70,7 +70,8 @@ public class CommentREST {
                 .flatMap(t -> {
                     t.getT1().addCommentToList(t.getT2());
                     return messageRepository.save(t.getT1());
-                });
+                })
+                .then(commentMono);
     }
 
     @GetMapping("/user/deleteAll")

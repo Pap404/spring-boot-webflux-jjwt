@@ -14,10 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
-/**
- *
- * @author ard333
- */
 @RestController
 @RequestMapping("/api/security")
 public class AuthenticationREST {

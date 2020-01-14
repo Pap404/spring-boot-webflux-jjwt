@@ -28,12 +28,6 @@ public class MessageREST {
         return messageRepository.findAll();
     }
 
-    @PostMapping
-    public Mono<Message> createMessage (@RequestBody Message message, Principal principal) {
-        message.setAutor(principal.getName());
-        return messageRepository.save(message);
-    }
-
     @DeleteMapping("/{id}")
     public Mono<String> deleteMessage (@PathVariable String id) {
         return messageRepository.deleteById(id)

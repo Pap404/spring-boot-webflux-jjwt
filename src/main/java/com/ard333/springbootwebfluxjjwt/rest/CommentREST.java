@@ -12,6 +12,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/comment")
@@ -62,16 +63,31 @@ public class CommentREST {
     }
 
     @PostMapping("/user/{messageId}")
-    public Mono<Comment> addCommentToMessage (@PathVariable String messageId, @RequestBody Comment comment, Principal principal) {
-        Mono<Message> messageMono = messageRepository.findById(messageId);
+    public Mono<User> addCommentToMessage (@PathVariable String messageId, @RequestBody Comment comment, Principal principal) {
         comment.setCommentator(principal.getName());
+        Mono<User> user = userRepository.findByUsername(principal.getName());
         Mono<Comment> commentMono = commentRepository.save(comment);
-        messageMono.zipWith(commentMono)
-                .flatMap(t -> {
-                    t.getT1().addCommentToList(t.getT2());
-                    return messageRepository.save(t.getT1());
+       return user.zipWith(commentMono)
+                .flatMap( t -> {
+                    User user1 = t.getT1();
+                    List<Message> messages = user1.getMessage();
+                    for (Message mes : messages) {
+                        if(messageId.equals(mes.getId())){
+                            mes.addCommentToList(comment);
+                        }
+                    }
+                    user1.setMessage(messages);
+                    return userRepository.save(user1);
                 });
-        return commentMono;
+//        Mono<Message> messageMono = messageRepository.findById(messageId);
+//        comment.setCommentator(principal.getName());
+//        Mono<Comment> commentMono = commentRepository.save(comment);
+//        messageMono.zipWith(commentMono)
+//                .flatMap(t -> {
+//                    t.getT1().addCommentToList(t.getT2());
+//                    return messageRepository.save(t.getT1());
+//                });
+//        return commentMono;
     }
 
     @GetMapping("/user/deleteAll")

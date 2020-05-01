@@ -30,21 +30,21 @@ public class User implements UserDetails {
 	private String id;
 
 	private String username;
-	
+
 	private String password;
-	
+
 	@Getter @Setter
 	private Boolean enabled;
-	
+
 	@Getter @Setter
 	private List<Role> roles = new ArrayList<>();
 
 	@Getter @Setter
 	private List<Message> message = new ArrayList<>();
 
-	@Getter
-	@Setter
-	private List<Comment> comment = new ArrayList<>();
+//	@Getter
+//	@Setter
+//	private List<Comment> comment = new ArrayList<>();
 
 	public void addMessageToList(Message message) {
 		this.message.add(message);
@@ -58,7 +58,7 @@ public class User implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -93,7 +93,7 @@ public class User implements UserDetails {
 	public String getPassword() {
 		return password;
 	}
-	
+
 	@JsonProperty
 	public void setPassword(String password) {
 		this.password = password;

@@ -41,6 +41,11 @@ public class CommentREST {
         return commentRepository.save(comment);
     }
 
+    @DeleteMapping
+    public Mono<Void> deleteAllComments () {
+        return commentRepository.deleteAll();
+    }
+
     @DeleteMapping("/{id}")
     public Mono<String> deleteCommentById (@PathVariable String id) {
         return commentRepository.deleteById(id)
@@ -56,11 +61,11 @@ public class CommentREST {
         });
     }
 
-    @GetMapping("/user")
-    public Flux<Comment> getAllCommentOfUser (Principal principal) {
-        return userRepository.findByUsername(principal.getName())
-                .map(c -> c.getComment()).flatMapMany(Flux::fromIterable);
-    }
+//    @GetMapping("/user")
+//    public Flux<Comment> getAllCommentOfUser (Principal principal) {
+//        return userRepository.findByUsername(principal.getName())
+//                .map(c -> c.getMessage()).flatMapMany(Flux::fromIterable);
+//    }
 
     @PostMapping("/user/{messageId}")
     public Mono<User> addCommentToMessage (@PathVariable String messageId, @RequestBody Comment comment, Principal principal) {

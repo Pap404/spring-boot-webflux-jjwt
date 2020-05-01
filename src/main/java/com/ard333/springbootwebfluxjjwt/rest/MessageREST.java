@@ -28,6 +28,11 @@ public class MessageREST {
         return messageRepository.findAll();
     }
 
+    @DeleteMapping
+    public Mono<Void> deleteAllMessages () {
+        return messageRepository.deleteAll();
+    }
+
     @DeleteMapping("/{id}")
     public Mono<String> deleteMessage (@PathVariable String id) {
         return messageRepository.deleteById(id)

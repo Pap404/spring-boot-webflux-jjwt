@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/message")
@@ -59,15 +60,31 @@ public class MessageREST {
          .map(u -> u.getMessage()).flatMapMany(Flux::fromIterable);
     }
 
+    @DeleteMapping("/delete_message")
+    public Mono<User> deleteAllMessageWithComment (Principal principal) {
+        return userRepository.findByUsername(principal.getName())
+                .map(u -> {
+                    u.cleanListMessage();
+                    return u;
+                });
+    }
+
     @PostMapping("/user")
     public Mono<Message> addMessageToUser (Principal principal, @RequestBody Message message) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Mono<User> userMono = userRepository.findByUsername(principal.getName());
         message.setAutor(principal.getName());
         Mono<Message> messageMono = messageRepository.save(message);
+        System.out.println("++++++++++++++" + messageMono);
          userMono.zipWith(messageMono)
                 .flatMap(t -> {
-                    t.getT1().addMessageToList(t.getT2());
-                    return userRepository.save(t.getT1());
+                    System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
+                    User user = t.getT1();
+                    System.out.println(t.getT1());
+                    System.out.println(t.getT2());
+                    user.addMessageToList(t.getT2());
+                    System.out.println(user.getMessage());
+                    return userRepository.save(user);
                 });
          return messageMono;
     }

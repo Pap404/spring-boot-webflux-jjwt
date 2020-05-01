@@ -46,8 +46,13 @@ public class User implements UserDetails {
 //	@Setter
 //	private List<Comment> comment = new ArrayList<>();
 
+	public void cleanListMessage() {
+		this.message.removeAll(this.message);
+	}
+
 	public void addMessageToList(Message message) {
 		this.message.add(message);
+		System.out.println(this.message);
 	}
 
 	public void addRoleToList(Role role) {

@@ -79,9 +79,12 @@ public class CommentREST {
                     for (Message mes : messages) {
                         if(messageId.equals(mes.getId())){
                             mes.addCommentToList(comment);
+                            System.out.println(mes.getComment());
                         }
                     }
                     user1.setMessage(messages);
+                    System.out.println(user1.getMessage());
+//                    user1.cleanListMessage();
                     return userRepository.save(user1);
                 });
 //        Mono<Message> messageMono = messageRepository.findById(messageId);

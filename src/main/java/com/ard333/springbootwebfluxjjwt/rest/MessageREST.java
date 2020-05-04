@@ -76,16 +76,16 @@ public class MessageREST {
         message.setAutor(principal.getName());
         Mono<Message> messageMono = messageRepository.save(message);
         System.out.println("++++++++++++++" + messageMono);
-         userMono.zipWith(messageMono)
+        return messageMono.zipWith(userMono)
                 .flatMap(t -> {
                     System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
-                    User user = t.getT1();
+                    User user = t.getT2();
                     System.out.println(t.getT1());
                     System.out.println(t.getT2());
-                    user.addMessageToList(t.getT2());
+                    user.addMessageToList(t.getT1());
                     System.out.println(user.getMessage());
-                    return userRepository.save(user);
+                    return userRepository.save(user).map(x -> x.getMessage().get(x.getMessage().size()-1));
                 });
-         return messageMono;
+//         return messageMono;
     }
 }
